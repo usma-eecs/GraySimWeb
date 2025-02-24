@@ -13,7 +13,8 @@ const Login = () => {
     e.preventDefault();
     try {
       // Make the API call to login
-      const res = await axios.post('/api/auth/login', { username, password });
+      alert("I am right here")
+      const res = await axios.post('http://localhost:5000/login', { username, password });
       localStorage.setItem('token', res.data.token);
       alert('Login successful!');
     } catch (err) {

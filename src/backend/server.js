@@ -1,6 +1,7 @@
 // Import required packages
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -9,10 +10,11 @@ const app = express();
 
 // Middleware: Parse JSON bodies from HTTP requests
 app.use(express.json());
+app.use(cors())
 
 // Connect to MongoDB
-// Replace 'mern-auth-db' with your desired database name
-mongoose.connect('mongodb://localhost/mern-auth-db', {
+// Can replace with a West Point server name later
+mongoose.connect('mongodb://localhost:27017/cadets', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -29,7 +31,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // **Register Route**: Create a new user
-app.post('/api/auth/register', async (req, res) => {
+app.post('/register', async (req, res) => {
   try {
     // Step 1: Extract username and password from the request body
     const { username, password } = req.body;
@@ -63,7 +65,7 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 // **Login Route**: Authenticate an existing user
-app.post('/api/auth/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
     // Step 1: Extract username and password from the request body
     const { username, password } = req.body;

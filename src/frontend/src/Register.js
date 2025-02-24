@@ -13,11 +13,12 @@ const Register = () => {
     e.preventDefault();
     try {
       // Make the API call to register
-      const res = await axios.post('/api/auth/register', { username, password }); 
+      const res = await axios.post('http://localhost:5000/register', { username, password }); 
       localStorage.setItem('token', res.data.token);
       alert('Registration successful!');
     } catch (err) {
-      alert('Registration failed (This is a Catch all): ' + (err.response?.data?.msg || err.message));
+      alert(err)
+      alert('Registration failed: ' + (err.response?.data?.msg || err.message));
     }
   };
 
