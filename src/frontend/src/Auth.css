@@ -1,0 +1,22 @@
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    opacity: 0;
+    animation: fadeInFast 0.3s ease-in forwards;
+  }
+  
+  /* Make the animation faster */
+  @keyframes fadeInFast {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

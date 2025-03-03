@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-const Login = () => {
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const { username, password } = formData;
+const Login = ({ onAuth }) => {
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errorMessage, setErrorMessage] = useState("");
+  const { email, password } = formData;
+  const navigate = useNavigate(); // Define navigate function
 
   // Update form data when inputs change
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,12 +16,12 @@ const Login = () => {
     e.preventDefault();
     try {
       // Make the API call to login
-      alert("I am right here")
-      const res = await axios.post('http://localhost:5000/login', { username, password });
+      const res = await axios.post('http://localhost:5000/login', { email, password });
       localStorage.setItem('token', res.data.token);
-      alert('Login successful!');
+      onAuth(); // Update authentication state
+      navigate("/dashboard"); // Redirect to dashboard
     } catch (err) {
-      alert('Login failed: ' + (err.response?.data?.msg || err.message));
+      setErrorMessage('Login failed: ' + (err.response?.data?.msg || err.message));
     }
   };
 
@@ -31,14 +34,14 @@ const Login = () => {
               <h3 className="card-title text-center mb-4">Login</h3>
               <form onSubmit={onSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="username" className="form-label">Username</label>
+                  <label htmlFor="email" className="form-label">Email</label>
                   <input
                     type="text"
-                    id="username"
-                    name="username"
+                    id="email"
+                    name="email"
                     className="form-control"
-                    placeholder="Enter your username"
-                    value={username}
+                    placeholder="Enter your email"
+                    value={email}
                     onChange={onChange}
                     required
                   />
@@ -62,6 +65,7 @@ const Login = () => {
               </form>
             </div>
           </div>
+          {errorMessage && <p className="error-message mt-3">{errorMessage}</p>}
         </div>
       </div>
     </div>
