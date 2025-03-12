@@ -7,7 +7,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-
+import CpuScheduling from './pages/CpuScheduling';
+import PageReplacement from './pages/PageReplacement';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -28,6 +29,8 @@ function App() {
           <Route path="/login" element={<PageWrapper><Login onAuth={() => setIsAuthenticated(true)} /></PageWrapper>} />
           <Route path="/register" element={<PageWrapper><Register onAuth={() => setIsAuthenticated(true)} /></PageWrapper>} />
           <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Dashboard /></ProtectedRoute>} />
+          <Route path="/cpu-scheduling" element={<ProtectedRoute isAuthenticated={isAuthenticated}><CpuScheduling /></ProtectedRoute>} />
+          <Route path="/page-replacement" element={<ProtectedRoute isAuthenticated={isAuthenticated}><PageReplacement /></ProtectedRoute>} />
         </Routes>
       </AnimatePresence>
     </Router>

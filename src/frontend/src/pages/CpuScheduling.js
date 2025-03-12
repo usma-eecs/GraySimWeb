@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CpuScheduling.css"; // Style file
+import "../styles/CpuScheduling.css";
 
 const processes = [
   { name: "A", start: 0, service: 5 },
@@ -13,7 +13,7 @@ const policies = ["FIFO", "SJF", "STCF", "RR", "MLFQ"];
 const CpuScheduling = () => {
   const [selectedPolicy, setSelectedPolicy] = useState("FIFO");
   const [grid, setGrid] = useState(
-    Array(processes.length).fill(Array(10).fill(false)) // 4 rows x 10 columns
+    Array(processes.length).fill(Array(10).fill(false))
   );
 
   const toggleCell = (row, col) => {
@@ -27,12 +27,14 @@ const CpuScheduling = () => {
 
   return (
     <div className="cpu-container">
-      {/* Controls (Policy Selection) */}
+      {/* Policy Bar */}
       <div className="cpu-controls">
         {policies.map((policy) => (
           <button
             key={policy}
-            className={`policy-btn ${selectedPolicy === policy ? "active" : ""}`}
+            className={`policy-btn ${
+              selectedPolicy === policy ? "active" : ""
+            }`}
             onClick={() => setSelectedPolicy(policy)}
           >
             {policy}
@@ -40,45 +42,46 @@ const CpuScheduling = () => {
         ))}
       </div>
 
+      {/* Main Content (stretches to fill space) */}
       <div className="cpu-content">
-        {/* Left Table (Processes, Start Time, Service Time) */}
+        {/* Left Table: Processes */}
         <div className="cpu-process-table">
+          <h3>Processes</h3>
           <div className="table-header">
-            <div className="table-cell">Process</div>
-            <div className="table-cell">Start Time</div>
-            <div className="table-cell">Service Time</div>
+            <span>Process</span>
+            <span>Start Time</span>
+            <span>Service Time</span>
           </div>
-          {processes.map((process, index) => (
-            <div key={process.name} className="table-row">
-              <div className="table-cell">{process.name}</div>
-              <div className="table-cell">{process.start}</div>
-              <div className="table-cell">{process.service}</div>
+          {processes.map((p) => (
+            <div key={p.name} className="table-row">
+              <span>{p.name}</span>
+              <span>{p.start}</span>
+              <span>{p.service}</span>
             </div>
           ))}
         </div>
 
-        {/* Main Scheduling Grid */}
+        {/* Grid Area (fills leftover width) */}
         <div className="cpu-grid">
           {/* Time Row */}
-          <div className="time-row">
+          <div className="grid-row time-row">
             <div className="grid-header">Process</div>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <div key={index} className="grid-time">
-                {index}
+            {Array.from({ length: 10 }).map((_, idx) => (
+              <div key={idx} className="grid-time">
+                {idx}
               </div>
             ))}
           </div>
-
-          {/* Grid Rows */}
-          {processes.map((process, row) => (
-            <div key={process.name} className="grid-row">
-              <div className="grid-header">{process.name}</div>
+          {/* Clickable Rows */}
+          {processes.map((p, row) => (
+            <div key={p.name} className="grid-row">
+              <div className="grid-header">{p.name}</div>
               {Array.from({ length: 10 }).map((_, col) => (
                 <div
                   key={`${row}-${col}`}
                   className={`grid-cell ${grid[row][col] ? "selected" : ""}`}
                   onClick={() => toggleCell(row, col)}
-                ></div>
+                />
               ))}
             </div>
           ))}
@@ -92,9 +95,9 @@ const CpuScheduling = () => {
         </div>
       </div>
 
-      {/* Bottom Description */}
+      {/* Footer */}
       <div className="cpu-footer">
-        This scheduler view shows the {selectedPolicy} scheduling policy.
+        This scheduler view shows the <b>{selectedPolicy}</b> scheduling policy.
       </div>
     </div>
   );

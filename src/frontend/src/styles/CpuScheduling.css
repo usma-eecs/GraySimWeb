@@ -1,132 +1,167 @@
-/* Overall Container */
+/* Outer Container: full screen, column layout */
 .cpu-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    background-color: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Policy Selection Buttons */
-  .cpu-controls {
-    display: flex;
-    background-color: maroon;
-    padding: 5px;
-  }
-  
-  .policy-btn {
-    background-color: #ccc;
-    color: black;
-    border: none;
-    padding: 8px 15px;
-    margin: 2px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .policy-btn.active {
-    background-color: white;
-    color: maroon;
-  }
-  
-  /* Main Content Layout */
-  .cpu-content {
-    display: flex;
-    flex: 1;
-  }
-  
-  /* Left Table */
-  .cpu-process-table {
-    background-color: darkgreen;
-    padding: 10px;
-    width: 200px;
-  }
-  
-  .table-header,
-  .table-row {
-    display: flex;
-  }
-  
-  .table-cell {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    border: 1px solid white;
-  }
-  
-  /* Scheduling Grid */
-  .cpu-grid {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    background-color: navy;
-    padding: 10px;
-  }
-  
-  .time-row,
-  .grid-row {
-    display: flex;
-  }
-  
-  .grid-header {
-    width: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #222;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .grid-time {
-    width: 40px;
-    text-align: center;
-    padding: 5px;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .grid-cell {
-    width: 40px;
-    height: 40px;
-    background-color: gray;
-    border: 1px solid white;
-    cursor: pointer;
-  }
-  
-  .grid-cell.selected {
-    background-color: lightblue;
-  }
-  
-  /* Side Buttons */
-  .side-buttons {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-  }
-  
-  .side-btn {
-    background-color: #e57373;
-    border: none;
-    padding: 15px;
-    margin: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .side-btn:hover {
-    background-color: #d32f2f;
-  }
-  
-  /* Footer */
-  .cpu-footer {
-    background-color: #222;
-    padding: 10px;
-    text-align: center;
-    color: white;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  width: 100vw;     /* Fill full screen width */
+  height: 100vh;    /* Fill full screen height */
+  margin: 0;        /* Remove default margins */
+  background-color: #2f2f2f;  /* Dark gray background */
+  color: #ffffff;             /* White text */
+  font-family: "Arial", sans-serif;
+}
+
+/* Policy Selection Bar at the Top */
+.cpu-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #444;  /* Medium gray */
+  padding: 10px;
+}
+
+.policy-btn {
+  background: linear-gradient(45deg, #444, #777); /* Gray gradient */
+  color: #d4af37;  /* Gold text */
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.policy-btn.active {
+  background: #d4af37;  /* Gold background */
+  color: #2f2f2f;       /* Dark gray text */
+}
+
+/* Main Content: occupies remaining space */
+.cpu-content {
+  flex: 1;
+  display: flex;       /* horizontal layout: table, grid, side buttons */
+  padding: 15px;
+  box-sizing: border-box;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Left Table: fixed width or min width */
+.cpu-process-table {
+  background-color: #3a3a3a; /* Darker gray */
+  padding: 15px;
+  width: 220px;
+  border-radius: 10px;
+}
+
+.cpu-process-table h3 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.table-header,
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #555; /* Slightly lighter gray for the line */
+}
+
+/* Center Grid: expands to fill leftover space */
+.cpu-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #333; /* Another shade of gray */
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: auto; 
+}
+
+/* Rows in the grid */
+.grid-row {
+  display: grid;
+  grid-template-columns: 60px repeat(10, 1fr);
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+/* Time row looks similar but is labeled 'time-row' for clarity */
+.time-row {
+  margin-bottom: 15px;
+}
+
+/* Cells for row headers */
+.grid-header {
+  background-color: #444; 
+  color: #fff;       
+  font-weight: bold;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-time {
+  background-color: #555; 
+  color: #fff;
+  font-weight: bold;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Individual clickable cells */
+.grid-cell {
+  background-color: #777; 
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  min-height: 45px; 
+}
+
+.grid-cell:hover {
+  background-color: #999; 
+}
+
+/* Toggle color for selected cells */
+.grid-cell.selected {
+  background-color: #d4af37; /* Gold */
+  border: 2px solid #fff; 
+}
+
+/* Right side buttons */
+.side-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.side-btn {
+  background: linear-gradient(45deg, #666, #d4af37); /* Gray -> Gold gradient */
+  border: none;
+  padding: 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;  /* White text */
+  text-align: center;
+  border-radius: 8px;
+  min-width: 120px;
+}
+
+.side-btn:hover {
+  background: #fff;
+  color: #d4af37; /* Gold text on hover */
+}
+
+/* Footer at bottom */
+.cpu-footer {
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  background-color: #3a3a3a; /* Darker gray for footer */
+}
