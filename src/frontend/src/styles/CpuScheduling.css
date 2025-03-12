@@ -1,0 +1,132 @@
+/* Overall Container */
+.cpu-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background-color: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Policy Selection Buttons */
+  .cpu-controls {
+    display: flex;
+    background-color: maroon;
+    padding: 5px;
+  }
+  
+  .policy-btn {
+    background-color: #ccc;
+    color: black;
+    border: none;
+    padding: 8px 15px;
+    margin: 2px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .policy-btn.active {
+    background-color: white;
+    color: maroon;
+  }
+  
+  /* Main Content Layout */
+  .cpu-content {
+    display: flex;
+    flex: 1;
+  }
+  
+  /* Left Table */
+  .cpu-process-table {
+    background-color: darkgreen;
+    padding: 10px;
+    width: 200px;
+  }
+  
+  .table-header,
+  .table-row {
+    display: flex;
+  }
+  
+  .table-cell {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid white;
+  }
+  
+  /* Scheduling Grid */
+  .cpu-grid {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: navy;
+    padding: 10px;
+  }
+  
+  .time-row,
+  .grid-row {
+    display: flex;
+  }
+  
+  .grid-header {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #222;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .grid-time {
+    width: 40px;
+    text-align: center;
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .grid-cell {
+    width: 40px;
+    height: 40px;
+    background-color: gray;
+    border: 1px solid white;
+    cursor: pointer;
+  }
+  
+  .grid-cell.selected {
+    background-color: lightblue;
+  }
+  
+  /* Side Buttons */
+  .side-buttons {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .side-btn {
+    background-color: #e57373;
+    border: none;
+    padding: 15px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .side-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  /* Footer */
+  .cpu-footer {
+    background-color: #222;
+    padding: 10px;
+    text-align: center;
+    color: white;
+  }
+  

@@ -2,10 +2,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const { spawn } = require("child_process");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User, Save, Problem, Test } = require('./schemas');
-// import { User, Save, Problem, Test } from "./schemas.js";
+
 
 // Create an Express app
 const app = express();
@@ -14,18 +15,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+let scalaServerProcess = null;
+
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/cadets')
   .then(() => console.log('MongoDB is connected!'))
   .catch(err => console.error('MongoDB connection error:', err));
-
-// const userSchema = new mongoose.Schema({
-//   email: { type: String, required: true, unique: true },
-//   password: { type: String, required: true },
-//   acc_type: { type: String, default: "cadet", required: true }
-// });
-
-// const User = mongoose.model('User', userSchema);
 
 // **Register Route**: Create a new user
 app.post('/register', async (req, res) => {
@@ -120,6 +115,40 @@ app.post('/test', async (req, res) => {
   }
 });
 
+// Start Scala Server when user logs in
+app.post("/start-scala", (req, res) => {
+  if (scalaServerProcess) {
+    return res.json({ msg: "Scala server is already running!" });
+  }
+
+  scalaServerProcess = spawn("sbt", ["run"], { cwd: "backend/scala-app" });
+
+  scalaServerProcess.stdout.on("data", (data) => {
+    console.log(`[SCALA OUT]: ${data}`);
+  });
+
+  scalaServerProcess.stderr.on("data", (data) => {
+    console.error(`[SCALA ERR]: ${data}`);
+  });
+
+  scalaServerProcess.on("close", () => {
+    console.log("Scala server stopped.");
+    scalaServerProcess = null;
+  });
+
+  res.json({ msg: "Scala server started!" });
+});
+
+// Stop Scala Server when user logs out
+app.post("/stop-scala", (req, res) => {
+  if (scalaServerProcess) {
+    scalaServerProcess.kill();
+    scalaServerProcess = null;
+    res.json({ msg: "Scala server stopped!" });
+  } else {
+    res.json({ msg: "Scala server is not running." });
+  }
+});
 
 // Start the Express server
 const PORT = process.env.PORT || 5000;

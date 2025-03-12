@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { registerUser } from '../api/auth';
 
 const Register = ({ onAuth }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -16,7 +16,7 @@ const Register = ({ onAuth }) => {
     e.preventDefault();
     try {
       // Make the API call to register
-      const res = await axios.post('http://localhost:5000/register', { email, password });
+      const res = await registerUser(formData);
       localStorage.setItem('token', res.data.token);
       onAuth(); // Update authentication state
       navigate("/dashboard"); // Redirect to dashboard

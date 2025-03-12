@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
+import { loginUser } from '../api/auth';
+ 
 const Login = ({ onAuth }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errorMessage, setErrorMessage] = useState("");
@@ -16,7 +16,7 @@ const Login = ({ onAuth }) => {
     e.preventDefault();
     try {
       // Make the API call to login
-      const res = await axios.post('http://localhost:5000/login', { email, password });
+      const res = await loginUser(formData);
       localStorage.setItem('token', res.data.token);
       onAuth(); // Update authentication state
       navigate("/dashboard"); // Redirect to dashboard

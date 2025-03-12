@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } f
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Home from "./Home";
-import Login from './Login';
-import Register from './Register';
-import Dashboard from "./Dashboard";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -63,13 +64,19 @@ const DashboardNavbar = ({ setIsAuthenticated }) => {
     <Navbar bg="dark" variant="dark" expand="lg" className="shadow">
       <Container>
         <Navbar.Brand as={Link} to="/dashboard">Gray Sim Web</Navbar.Brand>
-        <Nav className="ms-auto">
-          <Button variant="danger" onClick={handleLogout}>Logout</Button>
-        </Nav>
+        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link as={Link} to="/cpu-scheduling">CPU Scheduling</Nav.Link>
+            <Nav.Link as={Link} to="/page-replacement">Page Replacement</Nav.Link>
+            <Button variant="danger" onClick={handleLogout}>Logout</Button>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );
 };
+
 
 /* PageWrapper for Animations */
 const PageWrapper = ({ children }) => (
