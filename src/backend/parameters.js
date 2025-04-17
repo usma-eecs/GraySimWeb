@@ -1,0 +1,4 @@
+
+
+const DOMAIN = 'westpoint.edu';
+

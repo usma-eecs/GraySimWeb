@@ -10,11 +10,13 @@ const User = mongoose.model('User', userSchema);
 
 // Define a Save schema with Mongoose
 const saveSchema = new mongoose.Schema({
-    simulation: { type: String, required: true },
-    rawAnswer: { type: String, required: true }, //Event Data
     userID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     problemID: { type: mongoose.Schema.Types.ObjectId, ref: 'Problem', required: true },
+    simulation: { type: String, required: true },
     timestamp: { type: Date, default: Date.now, required: true },
+    policy: { type: String, required: true },
+    event: { type: String, required: true },
+    studentAnswer: { type: String, required: true }, //Event Data
     feedback: { type: String, default: "None", required: true }, //Event Data pt 2
     isCorrect: { type: Boolean, required: true }
 });

@@ -6,12 +6,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Verify from "./pages/Verify";
 import Dashboard from "./pages/Dashboard";
 import CpuScheduling from './pages/CpuScheduling';
 import PageReplacement from './pages/PageReplacement';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return !!localStorage.getItem("token"); // true if token exists
+  });
 
   return (
     <Router>
@@ -28,6 +31,7 @@ function App() {
           <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
           <Route path="/login" element={<PageWrapper><Login onAuth={() => setIsAuthenticated(true)} /></PageWrapper>} />
           <Route path="/register" element={<PageWrapper><Register onAuth={() => setIsAuthenticated(true)} /></PageWrapper>} />
+          <Route path="/verify" element={<PageWrapper><Verify /></PageWrapper>} />
           <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Dashboard /></ProtectedRoute>} />
           <Route path="/cpu-scheduling" element={<ProtectedRoute isAuthenticated={isAuthenticated}><CpuScheduling /></ProtectedRoute>} />
           <Route path="/page-replacement" element={<ProtectedRoute isAuthenticated={isAuthenticated}><PageReplacement /></ProtectedRoute>} />

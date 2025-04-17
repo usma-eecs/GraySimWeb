@@ -4,6 +4,7 @@
   flex-direction: column;
   width: 100vw;     /* Fill full screen width */
   height: 100vh;    /* Fill full screen height */
+  overflow: hidden;
   margin: 0;        /* Remove default margins */
   background-color: #2f2f2f;  /* Dark gray background */
   color: #ffffff;             /* White text */
@@ -12,6 +13,7 @@
 
 /* Policy Selection Bar at the Top */
 .cpu-controls {
+  flex: 0 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,11 +39,12 @@
 
 /* Main Content: occupies remaining space */
 .cpu-content {
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;       /* horizontal layout: table, grid, side buttons */
   padding: 15px;
   box-sizing: border-box;
   gap: 20px;
+  overflow-y: auto;
   align-items: flex-start;
 }
 
@@ -159,9 +162,20 @@
 
 /* Footer at bottom */
 .cpu-footer {
+  flex: 0 0 auto;
   padding: 10px;
   text-align: center;
   color: #fff;
   font-weight: bold;
   background-color: #3a3a3a; /* Darker gray for footer */
+}
+
+.server-response {
+  margin-top: 10px;
+  color: gold;
+  background: #333;
+  border: 1px solid #555;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
 }

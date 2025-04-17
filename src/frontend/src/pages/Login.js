@@ -21,7 +21,7 @@ const Login = ({ onAuth }) => {
       onAuth(); // Update authentication state
       navigate("/dashboard"); // Redirect to dashboard
     } catch (err) {
-      setErrorMessage('Login failed: ' + (err.response?.data?.msg || err.message));
+      setErrorMessage('Login failed: ' + (err));
     }
   };
 
