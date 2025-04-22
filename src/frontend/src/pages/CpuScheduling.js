@@ -104,8 +104,8 @@
 // };
 
 // export default CpuScheduling;
-
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import "../styles/CpuScheduling.css";
 import {
   getPolicy,
@@ -125,17 +125,14 @@ const processes = [
 const policies = ["FIFO", "SJF", "STCF", "RR", "MLFQ"];
 
 const CpuScheduling = () => {
-  const [userID] = useState("exampleUser123"); // Example user ID
+  const [userID] = useState("exampleUser123");
   const [selectedPolicy, setSelectedPolicy] = useState("FIFO");
   const [serverResponse, setServerResponse] = useState("");
   const [grid, setGrid] = useState(
     Array(processes.length).fill(Array(10).fill(false))
   );
 
-
-  // Convert grid toggles to a simple data structure
   const getStudentAnswer = () => {
-    // e.g. array of arrays of selected columns
     return grid.map((row) =>
       row.reduce((acc, val, colIndex) => {
         if (val) acc.push(colIndex);
@@ -144,7 +141,6 @@ const CpuScheduling = () => {
     );
   };
 
-  // 1) Handle Policy Changes
   const handlePolicyChange = async (policy) => {
     setSelectedPolicy(policy);
     try {
@@ -155,16 +151,13 @@ const CpuScheduling = () => {
     }
   };
 
-  // 2) Toggle Grid Cell
   const toggleCell = (row, col) => {
     const newGrid = grid.map((r, rIdx) =>
       rIdx === row ? r.map((val, cIdx) => (cIdx === col ? !val : val)) : [...r]
     );
     setGrid(newGrid);
   };
-  
 
-  // 3) Show Policy
   const handleShowPolicy = async () => {
     try {
       const res = await getPolicy(userID, selectedPolicy);
@@ -174,7 +167,6 @@ const CpuScheduling = () => {
     }
   };
 
-  // 4) Show Feedback
   const handleShowFeedback = async () => {
     try {
       const studentAnswer = getStudentAnswer();
@@ -185,7 +177,6 @@ const CpuScheduling = () => {
     }
   };
 
-  // 5) Show Solution
   const handleShowSolution = async () => {
     try {
       const studentAnswer = getStudentAnswer();
@@ -196,7 +187,6 @@ const CpuScheduling = () => {
     }
   };
 
-  // (Optional) Reset or Get Problem
   const handleReset = async () => {
     try {
       const res = await resetProblem(userID);
@@ -210,31 +200,53 @@ const CpuScheduling = () => {
     try {
       const res = await getProblem(userID);
       console.log("Get Problem:", res.data);
-      // Possibly update processes
     } catch (error) {
       console.error("Error in getProblem:", error);
     }
   };
 
   return (
-    <div className="cpu-container">
+    <motion.div
+      className="cpu-container"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -40 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Top Policy Buttons */}
-      <div className="cpu-controls">
+      <motion.div
+        className="cpu-controls"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
         {policies.map((policy) => (
-          <button
+          <motion.button
             key={policy}
             className={`policy-btn ${selectedPolicy === policy ? "active" : ""}`}
             onClick={() => handlePolicyChange(policy)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
             {policy}
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
 
       {/* Main Content */}
-      <div className="cpu-content">
-        {/* Left: Process Table */}
-        <div className="cpu-process-table">
+      <motion.div
+        className="cpu-content"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        {/* Process Table */}
+        <motion.div
+          className="cpu-process-table"
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
           <h3>Processes</h3>
           <div className="table-header">
             <span>Process</span>
@@ -248,10 +260,15 @@ const CpuScheduling = () => {
               <span>{p.service}</span>
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Middle: Grid */}
-        <div className="cpu-grid">
+        {/* Grid */}
+        <motion.div
+          className="cpu-grid"
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.7 }}
+        >
           <div className="grid-row time-row">
             <div className="grid-header">Process</div>
             {Array.from({ length: 10 }).map((_, idx) => (
@@ -272,34 +289,33 @@ const CpuScheduling = () => {
               ))}
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Right: Side Buttons */}
-        <div className="side-buttons">
-          <button className="side-btn" onClick={handleShowPolicy}>
-            Show Policy
-          </button>
-          <button className="side-btn" onClick={handleShowFeedback}>
-            Show Feedback
-          </button>
-          <button className="side-btn" onClick={handleShowSolution}>
-            Show Solution
-          </button>
-          {/* Optional Buttons */}
-          <button className="side-btn" onClick={handleReset}>
-            Reset
-          </button>
-          <button className="side-btn" onClick={handleGetProblem}>
-            Get Problem
-          </button>
-        </div>
-      </div>
+        {/* Side Buttons */}
+        <motion.div
+          className="side-buttons"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+        >
+          <button className="side-btn" onClick={handleShowPolicy}>Show Policy</button>
+          <button className="side-btn" onClick={handleShowFeedback}>Show Feedback</button>
+          <button className="side-btn" onClick={handleShowSolution}>Show Solution</button>
+          <button className="side-btn" onClick={handleReset}>Reset</button>
+          <button className="side-btn" onClick={handleGetProblem}>Get Problem</button>
+        </motion.div>
+      </motion.div>
 
       {/* Footer */}
-      <div className="cpu-footer">
+      <motion.div
+        className="cpu-footer"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.1 }}
+      >
         This scheduler view shows the <b>{selectedPolicy}</b> scheduling policy.
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -63,75 +63,113 @@
 // };
 
 // export default Dashboard;
-
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   return (
-    <div className="cpu-container">
-      {/* Top Header */}
-      <div className="cpu-controls" style={{ justifyContent: 'space-between', padding: '20px 40px' }}>
-        <h2 style={{ color: '#fff', fontSize: '2rem', margin: 0 }}>DASHBOARD</h2>
-      </div>
+    <motion.div
+      className="cpu-container"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -40 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Header */}
+      <motion.div
+        className="cpu-controls"
+        style={{ justifyContent: "space-between", padding: "20px 40px" }}
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <h2 style={{ color: "#fff", fontSize: "2rem", margin: 0 }}>DASHBOARD</h2>
+      </motion.div>
 
-      <div className="cpu-content" style={{ alignItems: 'stretch' }}>
+      {/* Content */}
+      <motion.div
+        className="cpu-content"
+        style={{ alignItems: "stretch" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
         {/* Sidebar */}
-        <div className="cpu-process-table" style={{ minWidth: '220px' }}>
-          <h3 style={{ textAlign: 'left', color: '#fff' }}>Quick Links</h3>
+        <motion.div
+          className="cpu-process-table"
+          style={{ minWidth: "220px" }}
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
+          <h3 style={{ textAlign: "left", color: "#fff" }}>Quick Links</h3>
           <div className="d-flex flex-column gap-3 mt-3">
             <Link to="/cpu-scheduling" className="side-btn">CPU Scheduling</Link>
             <Link to="/page-replacement" className="side-btn">Page Replacement</Link>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Main Content Area */}
-        <div className="cpu-grid" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        {/* Main */}
+        <motion.div
+          className="cpu-grid"
+          style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.7 }}
+        >
           <div>
-            <h3 style={{ color: '#fff', marginBottom: '20px' }}>Welcome, Cadet!</h3>
-            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-              <div style={cardStyle}>
-                <p className="text-muted">Completed Simulations</p>
-                <h2>4</h2>
-              </div>
-              <div style={cardStyle}>
-                <p className="text-muted">Correct Answers</p>
-                <h2>3</h2>
-              </div>
-              <div style={cardStyle}>
-                <p className="text-muted">Last Login</p>
-                <h2>Apr 22</h2>
-              </div>
+            <h3 style={{ color: "#fff", marginBottom: "20px" }}>Welcome, Cadet!</h3>
+            <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+              <StatCard title="Completed Simulations" value="4" delay={0.8} />
+              <StatCard title="Correct Answers" value="3" delay={1.0} />
+              <StatCard title="Last Login" value="Apr 22" delay={1.2} />
             </div>
           </div>
 
-          <div className="mt-5">
-            <h4 style={{ color: '#fff', marginBottom: '20px' }}>Quick Actions</h4>
+          <motion.div className="mt-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}>
+            <h4 style={{ color: "#fff", marginBottom: "20px" }}>Quick Actions</h4>
             <div className="d-flex gap-3">
               <Link to="/cpu-scheduling" className="side-btn">Try CPU Simulation</Link>
               <Link to="/page-replacement" className="side-btn">Try Page Sim</Link>
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
 
       {/* Footer */}
-      <div className="cpu-footer">
+      <motion.div
+        className="cpu-footer"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6 }}
+      >
         Use the links on the left to start simulating. Welcome to Gray Sim Web.
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
-const cardStyle = {
-  backgroundColor: '#444',
-  color: 'white',
-  borderRadius: '12px',
-  padding: '20px',
-  width: '200px',
-  textAlign: 'center',
-  boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
-};
+// Stat card with animation
+const StatCard = ({ title, value, delay }) => (
+  <motion.div
+    style={{
+      backgroundColor: "#444",
+      color: "white",
+      borderRadius: "12px",
+      padding: "20px",
+      width: "200px",
+      textAlign: "center",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+    }}
+    initial={{ scale: 0 }}
+    animate={{ scale: 1 }}
+    transition={{ delay, type: "spring", stiffness: 200 }}
+  >
+    <p className="text-muted">{title}</p>
+    <h2>{value}</h2>
+  </motion.div>
+);
 
 export default Dashboard;
