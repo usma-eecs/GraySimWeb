@@ -104,6 +104,7 @@
 // };
 
 // export default CpuScheduling;
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import "../styles/CpuScheduling.css";
@@ -127,10 +128,10 @@ const policies = ["FIFO", "SJF", "STCF", "RR", "MLFQ"];
 const CpuScheduling = () => {
   const [userID] = useState("exampleUser123");
   const [selectedPolicy, setSelectedPolicy] = useState("FIFO");
-  const [serverResponse, setServerResponse] = useState("");
   const [grid, setGrid] = useState(
     Array(processes.length).fill(Array(10).fill(false))
   );
+  const [message, setMessage] = useState("");
 
   const getStudentAnswer = () => {
     return grid.map((row) =>
@@ -145,9 +146,9 @@ const CpuScheduling = () => {
     setSelectedPolicy(policy);
     try {
       const res = await getPolicy(userID, policy);
-      console.log("getPolicy response:", res.data);
+      setMessage(res.data?.msg || JSON.stringify(res.data));
     } catch (error) {
-      console.error("Error fetching policy:", error);
+      setMessage("Error fetching policy.");
     }
   };
 
@@ -161,9 +162,9 @@ const CpuScheduling = () => {
   const handleShowPolicy = async () => {
     try {
       const res = await getPolicy(userID, selectedPolicy);
-      console.log("Show Policy:", res.data);
+      setMessage(res.data?.msg || JSON.stringify(res.data));
     } catch (error) {
-      console.error("Error in showPolicy:", error);
+      setMessage("Error showing policy.");
     }
   };
 
@@ -171,9 +172,9 @@ const CpuScheduling = () => {
     try {
       const studentAnswer = getStudentAnswer();
       const res = await getFeedback(userID, selectedPolicy, studentAnswer);
-      console.log("Show Feedback:", res.data);
+      setMessage(res.data?.msg || JSON.stringify(res.data));
     } catch (error) {
-      console.error("Error in showFeedback:", error);
+      setMessage("Error showing feedback.");
     }
   };
 
@@ -181,27 +182,27 @@ const CpuScheduling = () => {
     try {
       const studentAnswer = getStudentAnswer();
       const res = await getSolution(userID, selectedPolicy, studentAnswer);
-      console.log("Show Solution:", res.data);
+      setMessage(res.data?.msg || JSON.stringify(res.data));
     } catch (error) {
-      console.error("Error in showSolution:", error);
+      setMessage("Error showing solution.");
     }
   };
 
   const handleReset = async () => {
     try {
       const res = await resetProblem(userID);
-      console.log("Reset response:", res.data);
+      setMessage(res.data?.msg || "Reset complete.");
     } catch (error) {
-      console.error("Error in reset:", error);
+      setMessage("Error during reset.");
     }
   };
 
   const handleGetProblem = async () => {
     try {
       const res = await getProblem(userID);
-      console.log("Get Problem:", res.data);
+      setMessage(res.data?.msg || "New problem fetched.");
     } catch (error) {
-      console.error("Error in getProblem:", error);
+      setMessage("Error getting problem.");
     }
   };
 
@@ -289,6 +290,18 @@ const CpuScheduling = () => {
               ))}
             </div>
           ))}
+
+          {/* Message Display */}
+          {message && (
+            <motion.div
+              className="server-message-box"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <p><b>Server says:</b> {message}</p>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Side Buttons */}
