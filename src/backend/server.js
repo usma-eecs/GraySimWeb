@@ -80,7 +80,7 @@ app.post('/send-verify', async (req, res) => {
 
     // await transporter.sendMail(mailOptions);
 
-    res.json({ msg: `Verification code sent to ${email}.` });
+    res.json({ msg: `Verification code sent to ${email}.`, devCode: code });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error in /send-verify' });

@@ -65,7 +65,11 @@ const Verify = () => {
     <div className="container mt-5">
       <h3 className="mb-3">Verify Your Account</h3>
       <p>We’ve sent a code to <strong>{email}</strong>. Enter it below.</p>
-  
+      {state?.devCode && (
+        <div className="alert alert-warning">
+          <strong>Development Only (Use this code):</strong> <code>{state.devCode}</code>
+        </div>
+      )}
       <input
         type="text"
         maxLength={6}
