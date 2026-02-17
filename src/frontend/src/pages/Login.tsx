@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { loginUser } from '../api/auth';
- 
-const Login = ({ onAuth }) => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api/auth";
+
+const Login = ({ onAuth }: { onAuth: () => void }): JSX.Element => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
-  const { email, password } = formData;
-  const navigate = useNavigate(); // Define navigate function
+  const navigate = useNavigate();
 
-  // Update form data when inputs change
-  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  // Handle form submission
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     try {
-      // Make the API call to login
       const res = await loginUser(formData);
-      localStorage.setItem('token', res.data.token);
-      onAuth(); // Update authentication state
-      navigate("/dashboard"); // Redirect to dashboard
+      localStorage.setItem("token", res.data.token);
+      onAuth();
+      navigate("/dashboard");
     } catch (err) {
-      setErrorMessage('Login failed: ' + (err));
+      setErrorMessage(`Login failed: ${String(err)}`);
     }
   };
 
@@ -41,7 +39,7 @@ const Login = ({ onAuth }) => {
                     name="email"
                     className="form-control"
                     placeholder="Enter your email"
-                    value={email}
+                    value={formData.email}
                     onChange={onChange}
                     required
                   />
@@ -54,7 +52,7 @@ const Login = ({ onAuth }) => {
                     name="password"
                     className="form-control"
                     placeholder="Enter your password"
-                    value={password}
+                    value={formData.password}
                     onChange={onChange}
                     required
                   />

@@ -1,6 +1,14 @@
 import React from "react";
 
-const CustomButton = ({ text, onClick, color = "blue" }) => {
+const CustomButton = ({
+  text,
+  onClick,
+  color = "blue",
+}: {
+  text: string;
+  onClick: () => void;
+  color?: string;
+}): JSX.Element => {
   return (
     <button
       onClick={onClick}

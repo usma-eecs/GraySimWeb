@@ -1,28 +1,26 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { sendVerify } from '../api/auth'; // new function we'll define
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { sendVerify } from "../api/auth";
 
-
-const Register = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [errorMessage, setErrorMessage] = useState('');
-  const { email, password } = formData;
+const Register = (): JSX.Element => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const onChange = (e) => setFormData({
-    ...formData,
-    [e.target.name]: e.target.value
-  });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     try {
-      // Send email & password to the server to generate + email the code
-      const res = await sendVerify({ email, password });
-      // Redirect user to the verify page, pass them the email via route state
-      navigate('/verify', { state: { email, devCode: res.data.devCode } });
+      await sendVerify({ email: formData.email, password: formData.password });
+      navigate("/verify", { state: { email: formData.email } });
     } catch (err) {
-      setErrorMessage('Registration failed: ' + (err));
+      setErrorMessage(`Registration failed: ${String(err)}`);
     }
   };
 
@@ -42,7 +40,7 @@ const Register = () => {
                     name="email"
                     className="form-control"
                     placeholder="Enter your email"
-                    value={email}
+                    value={formData.email}
                     onChange={onChange}
                     required
                   />
@@ -55,7 +53,7 @@ const Register = () => {
                     name="password"
                     className="form-control"
                     placeholder="Create a password"
-                    value={password}
+                    value={formData.password}
                     onChange={onChange}
                     required
                   />
@@ -74,4 +72,3 @@ const Register = () => {
 };
 
 export default Register;
-

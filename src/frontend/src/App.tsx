@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
+import React, { ReactNode, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,29 +8,27 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Verify from "./pages/Verify";
 import Dashboard from "./pages/Dashboard";
-import CpuScheduling from './pages/CpuScheduling';
-import PageReplacement from './pages/PageReplacement';
+import CpuScheduling from "./pages/CpuScheduling";
+import PageReplacement from "./pages/PageReplacement";
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return !!localStorage.getItem("token"); // true if token exists
+function App(): JSX.Element {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return !!localStorage.getItem("token");
   });
 
   return (
     <Router>
-      {/* Different Navbar for Dashboard */}
       {isAuthenticated ? (
         <DashboardNavbar setIsAuthenticated={setIsAuthenticated} />
       ) : (
         <MainNavbar />
       )}
 
-      {/* Page Transitions */}
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
           <Route path="/login" element={<PageWrapper><Login onAuth={() => setIsAuthenticated(true)} /></PageWrapper>} />
-          <Route path="/register" element={<PageWrapper><Register onAuth={() => setIsAuthenticated(true)} /></PageWrapper>} />
+          <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
           <Route path="/verify" element={<PageWrapper><Verify /></PageWrapper>} />
           <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Dashboard /></ProtectedRoute>} />
           <Route path="/cpu-scheduling" element={<ProtectedRoute isAuthenticated={isAuthenticated}><CpuScheduling /></ProtectedRoute>} />
@@ -41,8 +39,7 @@ function App() {
   );
 }
 
-/* Navbar for Home, Login, and Register */
-const MainNavbar = () => (
+const MainNavbar = (): JSX.Element => (
   <Navbar bg="dark" variant="dark" expand="lg" className="shadow">
     <Container>
       <Navbar.Brand as={Link} to="/">Gray Sim Web</Navbar.Brand>
@@ -57,11 +54,14 @@ const MainNavbar = () => (
   </Navbar>
 );
 
-/* Navbar for Dashboard (Shows Logout) */
-const DashboardNavbar = ({ setIsAuthenticated }) => {
+const DashboardNavbar = ({
+  setIsAuthenticated,
+}: {
+  setIsAuthenticated: (value: boolean) => void;
+}): JSX.Element => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     setIsAuthenticated(false);
     localStorage.removeItem("token");
     navigate("/");
@@ -84,9 +84,7 @@ const DashboardNavbar = ({ setIsAuthenticated }) => {
   );
 };
 
-
-/* PageWrapper for Animations */
-const PageWrapper = ({ children }) => (
+const PageWrapper = ({ children }: { children: ReactNode }): JSX.Element => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -97,9 +95,14 @@ const PageWrapper = ({ children }) => (
   </motion.div>
 );
 
-/* Protects Routes */
-const ProtectedRoute = ({ isAuthenticated, children }) => (
-  isAuthenticated ? children : <Navigate to="/login" />
+const ProtectedRoute = ({
+  isAuthenticated,
+  children,
+}: {
+  isAuthenticated: boolean;
+  children: ReactNode;
+}): JSX.Element => (
+  isAuthenticated ? <>{children}</> : <Navigate to="/login" />
 );
 
 export default App;

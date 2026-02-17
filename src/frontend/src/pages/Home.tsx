@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/Home.css";
 
-const Home = () => {
+const Home = (): JSX.Element => {
   return (
     <div className="hero-section">
       <h1 className="fade-in">Welcome to Gray Sim Web</h1>

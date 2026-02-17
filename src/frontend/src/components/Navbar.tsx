@@ -1,11 +1,18 @@
+import React from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { logoutUser } from "../api/auth"; // Import logout function
+import { logoutUser } from "../api/auth";
 
-const AppNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
+const AppNavbar = ({
+  isAuthenticated,
+  setIsAuthenticated,
+}: {
+  isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
+}): JSX.Element => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     logoutUser();
     setIsAuthenticated(false);
     navigate("/");
